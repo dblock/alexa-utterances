@@ -55,7 +55,7 @@ test('exhaustive vs non-exhaustive expansion', function (t) {
   var slots = { "MOVIE": "LITERAL" };
   var template = "{foo|bar|baz} {foo|bar|baz} {movie_names|MOVIE}";
   var result = utterances(template, slots, dictionary);
-  t.deepEqual(result, [ 
+  t.deepEqual(result, [
     "foo foo {star wars|MOVIE}",
     "bar foo {inception|MOVIE}",
     "baz foo {gattaca|MOVIE}",
@@ -68,7 +68,7 @@ test('exhaustive vs non-exhaustive expansion', function (t) {
   ]);
 
   var result2 = utterances(template, slots, dictionary, true);
-  t.deepEqual(result2, [ 
+  t.deepEqual(result2, [
     "foo foo {star wars|MOVIE}",
     "bar foo {star wars|MOVIE}",
     "baz foo {star wars|MOVIE}",
@@ -121,5 +121,31 @@ test('raw curly braces for custom slot types', function (t) {
     "my least favorite fruit is {Fruit}",
     "your least favorite fruit is {Fruit}"
   ]);
+  t.end();
+});
+
+test('exhaustive vs non-exhaustive expansion with multiple variables', function (t) {
+  var dictionary = {}
+  var slots = { "number": "NUMBER" };
+  var template = "{to |}set temperature to {1-2|number}";
+
+  var exhaustiveResult = utterances(template, slots, dictionary, true);
+  t.deepEqual(exhaustiveResult, [
+    "to set temperature to {one|number}",
+    "set temperature to {one|number}",
+    "to set temperature to {two|number}",
+    "set temperature to {two|number}"
+  ]);
+
+  var nonExhaustiveResult = utterances(template, slots, dictionary);
+  t.deepEqual(nonExhaustiveResult, [
+    "to set temperature to {one|number}",
+    "set temperature to {one|number}",
+    "to set temperature to {two|number}",
+    "set temperature to {two|number}"
+  ]);
+
+  t.deepEqual(nonExhaustiveResult, exhaustiveResult);
+
   t.end();
 });
