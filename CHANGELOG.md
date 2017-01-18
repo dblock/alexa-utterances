@@ -1,5 +1,6 @@
 ### Next
 
+* [#23](https://github.com/alexa-js/alexa-utterances/issues/23): Added code coverage - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 ### 0.2.1
